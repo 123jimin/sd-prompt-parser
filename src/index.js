@@ -131,8 +131,9 @@ export function split(parsed) {
     
     switch(parsed.type) {
         case 'comma':
-        case 'modifier':
             return [parsed, parsed];
+        case 'modifier':
+            return [parsed, ''];
         case 'negate': {
             const [pos, neg] = split(parsed.body);
             return [neg, pos];

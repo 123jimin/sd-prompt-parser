@@ -67,9 +67,10 @@ This translates to:
 ### Modifiers
 
 ```text
-<lora:name1:weight1> <custom:name2:weight2>
+<lora:name1:weight1> -<custom:name2:weight2>
 ```
 
 This translates to:
 
-- Positive &amp; Negative: `<lora:name1:weight1> <custom:name2:weight2>`
+- Positive: `<lora:name1:weight1>`
+- Negative: `<custom:name2:weight2>`
