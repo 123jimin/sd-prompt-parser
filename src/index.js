@@ -8,6 +8,14 @@ export { parse } from "./parser/index.js";
 /** @typedef {(modifier_args: string[]) => string|null|undefined } ModifierHandler */
 
 /**
+ * @param {PromptElem} parsed
+ * @returns {parsed is import("./parser/index.js").Comma}
+ */
+function isComma(parsed) {
+    return typeof parsed === 'object' && parsed.type === 'comma';
+}
+
+/**
  * @param {ParsedPrompt} parsed
  * @returns {boolean} Whether `parsed` is a null prompt.
  */
@@ -25,6 +33,41 @@ export function isNull(parsed) {
     }
 }
 
+/**
+ * Cleans up stray commas, non-recursively.
+ * 
+ * @param {PromptElem[]} parsed
+ * @returns {PromptElem[]}
+ */
+function cleanCommas(parsed) {
+    if(parsed.length === 0) return parsed;
+
+    /** @type {PromptElem[]} */
+    const cleaned = [];
+    let is_prev_comma = true;
+    for(let i=0; i<parsed.length; ++i) {
+        const parsed_child = parsed[i];
+
+        if(isComma(parsed_child)) {
+            if(is_prev_comma) continue;
+            is_prev_comma = true;
+        } else {
+            is_prev_comma = false;
+        }
+        
+        cleaned.push(parsed_child);
+    }
+
+    while(cleaned.length > 0) {
+        const last_cleaned = cleaned[cleaned.length-1];
+        if(!isComma(last_cleaned)) break;
+
+        cleaned.pop();
+    }
+
+    return cleaned;
+}
+
 /** @typedef {{modifierHandler: ModifierHandler}} StringifyArgs */
 
 /**
@@ -33,9 +76,9 @@ export function isNull(parsed) {
  * @param {Partial<StringifyArgs>|undefined} args
  * @returns {string}
  */
-export function stringify(parsed, args) {
-    if(typeof parsed === 'string') return parsed;
-    if(Array.isArray(parsed)) return parsed.map((child) => stringify(child, args)).join('');
+export function stringify(parsed, args = void 0) {
+    if(typeof parsed === 'string') return parsed.trim();
+    if(Array.isArray(parsed)) return cleanCommas(parsed).map((child) => stringify(child, args)).join('');
 
     switch(parsed.type) {
         case 'comma': return ", ";

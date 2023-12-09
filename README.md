@@ -1,6 +1,14 @@
 # sd-prompt-parser
 
-`sd-prompt-parser` is a simple JS library for parsing Stable Diffusion prompts.
+`sd-prompt-parser` is a simple JS library for parsing Stable Diffusion prompts with custom syntax.
+
+The syntax is designed to be used on frontends with one text input.
+
+## API
+
+```js
+import { parse, split, stringify } from 'sd-prompt-parser';
+```
 
 ## Syntax
 
