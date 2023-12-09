@@ -26,6 +26,10 @@ console.log(stringify(parsed_neg));
 // "tag1, (tag4)<lora:lora1>(custom modifier: custom, modifiers)"
 console.log(stringify(parsed_pos, {
     modifierHandler(args) {
+        // Supported return types:
+        // - `string[]`: the arguments of the modifier is substituted.
+        // - `string`: the modifier is substituted to the string.
+        // - `null` and `undefined`: removed.
         if(args[0] === 'lora') return args;
         return `(custom modifier: ${args.join(', ')})`;
     }
@@ -56,13 +60,12 @@ This translates to:
 - Positive: `(tag1), (tag4), (tag5, (tag7):2)`
 - Negative: `(tag2), (tag3), (tag6:2)`
 
-### LoRA
+### Modifiers
 
 ```text
-<lora:name1:weight1> -<lora:name2:weight2>
+<lora:name1:weight1> <custom:name2:weight2>
 ```
 
 This translates to:
 
-- Positive: `<lora:name1:weight1>`
-- Negative: `<lora:name2:weight2>`
+- Positive &amp; Negative: `<lora:name1:weight1> <custom:name2:weight2>`
