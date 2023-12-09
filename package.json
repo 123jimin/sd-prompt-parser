@@ -1,0 +1,22 @@
+{
+  "name": "sd-prompt-parser",
+  "version": "0.0.1",
+  "description": "Library for parsing Stable Diffusion prompts.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build-parser": "npx nearleyc grammar/parser.ne -o src/parser/grammar.cjs",
+    "test": "npx mocha"
+  },
+  "keywords": [],
+  "author": "Jimin Park",
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^4.3.10",
+    "mocha": "^10.2.0"
+  },
+  "dependencies": {
+    "moo": "^0.5.2",
+    "nearley": "^2.20.1"
+  }
+}
