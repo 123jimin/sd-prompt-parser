@@ -1,7 +1,7 @@
 {
-  "name": "sd-prompt-parser",
+  "name": "@jiminp/sd-prompt-parser",
   "version": "0.1.0",
-  "description": "Library for parsing Stable Diffusion prompts.",
+  "description": "Library for parsing prompts for Stable Diffusion.",
   "main": "index.js",
   "type": "module",
   "scripts": {

@@ -1,5 +1,8 @@
 # sd-prompt-parser
 
+![npm](https://img.shields.io/npm/v/@jiminp/sd-prompt-parser?style=flat-square)
+![GitHub Workflow Status (with branch)](https://img.shields.io/github/actions/workflow/status/123jimin/sd-prompt-parser/build.yaml?branch=main&style=flat-square)
+
 `sd-prompt-parser` is a simple JS library for parsing Stable Diffusion prompts with custom syntax.
 
 The syntax is designed to be used on frontends with one text input.
@@ -12,6 +15,7 @@ import { parse, split, stringify } from 'sd-prompt-parser';
 const prompt = "tag1, -tag2, -(tag3, -tag4) <lora:lora1> <custom:modifiers>";
 
 // AST of the prompt above
+// IMPORTANT: `parse` may throw.
 const parsed_prompt = parse(prompt);
 
 // AST of positive and negative prompts
@@ -33,7 +37,7 @@ console.log(stringify(parsed_pos, {
         if(args[0] === 'lora') return args;
         return `(custom modifier: ${args.join(', ')})`;
     }
-}))
+}));
 ```
 
 ## Syntax
