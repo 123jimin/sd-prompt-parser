@@ -5,7 +5,7 @@ export { parse } from "./parser/index.js";
 
 /** @typedef {import("./parser/index.js").PromptElem} PromptElem */
 /** @typedef {PromptElem|PromptElem[]} ParsedPrompt */
-/** @typedef {(modifier_args: string[]) => string|null|undefined } ModifierHandler */
+/** @typedef {(modifier_args: string[]) => string[]|string|null|undefined } ModifierHandler */
 
 /**
  * @param {PromptElem} parsed
@@ -77,7 +77,7 @@ function cleanCommas(parsed) {
  * @returns {string}
  */
 export function stringify(parsed, args = void 0) {
-    if(typeof parsed === 'string') return parsed.trim();
+    if(typeof parsed === 'string') return parsed.trim().replace(/[,\\<>()\[\]:|-]/g, "\\$&");
     if(Array.isArray(parsed)) return cleanCommas(parsed).map((child) => stringify(child, args)).join('');
 
     switch(parsed.type) {
@@ -91,7 +91,10 @@ export function stringify(parsed, args = void 0) {
         case 'modifier': {
             const modifierHandler = args?.modifierHandler;
             if(modifierHandler) {
-                return modifierHandler(parsed.args) ?? '';
+                const handled = modifierHandler(parsed.args);
+                if(handled == null) return '';
+                if(Array.isArray(handled)) return `<${handled.join(':')}>`;
+                return handled;
             } else {
                 return `<${parsed.args.join(':')}>`;
             }
@@ -129,7 +132,7 @@ export function split(parsed) {
     switch(parsed.type) {
         case 'comma':
         case 'modifier':
-            return [parsed, ''];
+            return [parsed, parsed];
         case 'negate': {
             const [pos, neg] = split(parsed.body);
             return [neg, pos];

@@ -14,7 +14,7 @@ const lexer = moo.compile({
     PIPE: /\|\s*/,
     COLON: /:\s*/,
     MINUS: /-\s*/,
-    TEXT: /(?![\-\s])(?:[^\n,\\<>()\[\]:|]|\\.)+/,
+    TEXT: { match: /(?![\-\s])(?:[^\n,\\<>()\[\]:|]|\\.)+/, value: (s) => s.replace(/\\(.)/g, "$1")},
     STRAY: /./,
 });
 

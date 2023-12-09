@@ -8,6 +8,28 @@ The syntax is designed to be used on frontends with one text input.
 
 ```js
 import { parse, split, stringify } from 'sd-prompt-parser';
+
+const prompt = "tag1, -tag2, -(tag3, -tag4) <lora:lora1> <custom:modifiers>";
+
+// AST of the prompt above
+const parsed_prompt = parse(prompt);
+
+// AST of positive and negative prompts
+const [parsed_pos, parsed_neg] = split(parsed_prompt);
+
+// "tag1, (tag4)<lora:lora1><custom:modifiers>"
+console.log(stringify(parsed_pos));
+
+// "tag2, (tag3)<lora:lora1><custom:modifiers>"
+console.log(stringify(parsed_neg));
+
+// "tag1, (tag4)<lora:lora1>(custom modifier: custom, modifiers)"
+console.log(stringify(parsed_pos, {
+    modifierHandler(args) {
+        if(args[0] === 'lora') return args;
+        return `(custom modifier: ${args.join(', ')})`;
+    }
+}))
 ```
 
 ## Syntax
