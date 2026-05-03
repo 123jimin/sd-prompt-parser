@@ -15,12 +15,12 @@
   "author": "Jimin Park",
   "license": "MIT",
   "devDependencies": {
-    "chai": "^4.3.10",
-    "mocha": "^10.2.0",
-    "typescript": "^5.3.3"
+    "chai": "^6.2.2",
+    "mocha": "^11.7.5",
+    "typescript": "^6.0.3"
   },
   "dependencies": {
-    "moo": "^0.5.2",
+    "moo": "^0.5.3",
     "nearley": "^2.20.1"
   }
 }
